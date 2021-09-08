@@ -1,4 +1,5 @@
 *.jpg
-*.txt
+/telegram/token.txt
+/telegram/user_id.txt
 .DS_Store
 __pycache__/
