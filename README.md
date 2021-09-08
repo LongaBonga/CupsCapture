@@ -30,6 +30,9 @@ there are also arguments for starting this project:
 - ``` --time_freq``` The frequency with which the program will search for cups and send notifications if they are found. Default 15 minutes
 - ``` --frame_amount``` The number of frames that must be processed at a time to predict the number of cups
 
+**Note:**
+You also need your own telegram bot more precisely, you need his token. You can get it by writing a message to @BotFather in Telegram
+
 **Run example**
 ```shell 
 python3 main.py --start_time=10 --finish_time=23 --video_path=0 --frame_amount=5
