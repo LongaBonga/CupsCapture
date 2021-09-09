@@ -19,6 +19,9 @@ def main():
                         help='The frequency with which the program will search for cups and send notifications if they are found. Default 15 minutes')
     parser.add_argument('--frame_amount', type=int, default=5,
                         help='The number of frames that must be processed at a time to predict the number of cups')
+    parser.add_argument('--show', type=bool, default=False, help ='If it is True, the image from the camera will be displayed on the screen')
+
+    parser.add_argument('--trashhold', type=float, default=0.25, help ='images with a probability below this threshold will not be considered')
 
     args = parser.parse_args()
 
@@ -45,7 +48,7 @@ def main():
                 if key == 27:
                     break
 
-                boxes = get_glasses(model, image)
+                boxes = get_glasses(model, image, args.trashhold)
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 fontScale = 1
                 fontColor = (0, 255, 0)
@@ -72,7 +75,8 @@ def main():
                             fontColor,
                             lineType)
 
-#                cv2.imshow('image', image)
+                if args.show:
+                    cv2.imshow('image', image)
 
                 mean_amount_of_cups += len(boxes)
             mean_amount_of_cups = mean_amount_of_cups / args.frame_amount

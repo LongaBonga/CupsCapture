@@ -29,7 +29,8 @@ there are also arguments for starting this project:
 - ``` --video_path``` The path to the video. or digit, if it is web camera
 - ``` --time_freq``` The frequency with which the program will search for cups and send notifications if they are found. Default 15 minutes
 - ``` --frame_amount``` The number of frames that must be processed at a time to predict the number of cups
-
+- ``` --show ``` If it is True, the image from the camera will be displayed on the screen
+- ``` --trashhold ``` Images with a probability below this threshold will not be considered
 **Note:**
 You also need your own telegram bot more precisely, you need his token. You can get it by writing a message to @BotFather in Telegram
 

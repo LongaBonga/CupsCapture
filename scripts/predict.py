@@ -9,19 +9,19 @@ def boxes_cor(i, predicition):  # return left bottom point (x1, y1) and right to
 
 
 # return the list of boxes in format: [(coord, proba), ..., ]
-def get_glasses_boxes(predicition):
+def get_glasses_boxes(predicition, trashhold):
     boxes = []
     for i in range(len(predicition[0]['boxes'])):
-        if predicition[0]['labels'][i] == 47 and predicition[0]['scores'][i].item() > 0.01:
+        if predicition[0]['labels'][i] == 47 and predicition[0]['scores'][i].item() > trashhold:
             boxes.append((boxes_cor(i, predicition),
                          predicition[0]['scores'][i].item()))
     return boxes
 
 
-def get_glasses(model, img):
+def get_glasses(model, img, trashhold):
     trans = transforms.ToTensor()
     img = trans(img)
     model.eval()
     x = [img]
     prediction = model(x)
-    return get_glasses_boxes(prediction)
+    return get_glasses_boxes(prediction, trashhold)
