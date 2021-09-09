@@ -31,6 +31,7 @@ there are also arguments for starting this project:
 - ``` --frame_amount``` The number of frames that must be processed at a time to predict the number of cups
 - ``` --show ``` If it is True, the image from the camera will be displayed on the screen
 - ``` --trashhold ``` Images with a probability below this threshold will not be considered
+
 **Note:**
 You also need your own telegram bot more precisely, you need his token. You can get it by writing a message to @BotFather in Telegram
 
