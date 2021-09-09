@@ -11,13 +11,13 @@ def main():
     parser = argparse.ArgumentParser(description='code run params')
     parser.add_argument('--start_time', type=int, default=10,
                         help='the hour when program will start searching cups')
-    parser.add_argument('--finish_time', type=int, default=11,
+    parser.add_argument('--finish_time', type=int, default=23,
                         help='the hour when program will finish searching cups')
     parser.add_argument('--video_path', type=str, default='0',
                         help='path to the video. 0 - web camera')
     parser.add_argument('--time_freq', type=int, default=15,
                         help='The frequency with which the program will search for cups and send notifications if they are found. Default 15 minutes')
-    parser.add_argument('--frame_amount', type=int, default=15,
+    parser.add_argument('--frame_amount', type=int, default=5,
                         help='The number of frames that must be processed at a time to predict the number of cups')
 
     args = parser.parse_args()
@@ -25,18 +25,17 @@ def main():
     struct_time = time.localtime()
 
     bot, _, id = bot_preparation()
-
+    print('bot is ready!')
     if args.video_path.isdigit():
         camera = int(args.video_path)
         cap = cv2.VideoCapture(camera)
     else:
         cap = cv2.VideoCapture(args.video_path)
+    print('get camera/video succesfull!')
+    model = torchvision.models.detection.fasterrcnn_mobilenet_v3_large_320_fpn(pretrained=True)
 
-    model = torchvision.models.detection.fasterrcnn_resnet50_fpn(
-        pretrained=True)  # you cant try use ssdlite320_mobilenet_v3_large
-
+    print('model is ready!')
     while True:
-        # and :
         if (struct_time.tm_hour < args.finish_time) and (struct_time.tm_hour > args.start_time) and (struct_time.tm_min % args.time_freq == 0):
             mean_amount_of_cups = 0
             for i in range(args.frame_amount):
@@ -47,7 +46,6 @@ def main():
                     break
 
                 boxes = get_glasses(model, image)
-
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 fontScale = 1
                 fontColor = (0, 255, 0)
@@ -61,7 +59,6 @@ def main():
 
                     cv2.putText(image, 'proba: {:.3f}'.format(box[1]), bottomLeftCornerOfText, font,
                                 fontScale, fontColor, lineType)  # add proba on image
-
                 font = cv2.FONT_HERSHEY_SIMPLEX
                 bottomLeftCornerOfText = (0, 20)
                 fontScale = 1
@@ -75,14 +72,13 @@ def main():
                             fontColor,
                             lineType)
 
-                cv2.imshow('image', image)
+#                cv2.imshow('image', image)
 
                 mean_amount_of_cups += len(boxes)
-
             mean_amount_of_cups = mean_amount_of_cups / args.frame_amount
 
             if mean_amount_of_cups > 1.5:
-                send_mes(bot, id, image)
+            	send_mes(bot, id, image)
 
 
 if __name__ == '__main__':

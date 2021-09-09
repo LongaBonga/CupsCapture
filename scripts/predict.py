@@ -12,7 +12,7 @@ def boxes_cor(i, predicition):  # return left bottom point (x1, y1) and right to
 def get_glasses_boxes(predicition):
     boxes = []
     for i in range(len(predicition[0]['boxes'])):
-        if predicition[0]['labels'][i] == 47 and predicition[0]['scores'][i].item() > 0.5:
+        if predicition[0]['labels'][i] == 47 and predicition[0]['scores'][i].item() > 0.01:
             boxes.append((boxes_cor(i, predicition),
                          predicition[0]['scores'][i].item()))
     return boxes
